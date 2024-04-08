@@ -40,7 +40,8 @@ INSTALLED_APPS = [
 
     # Added apps
     'rest_framework',
-    'core'
+    'core',
+    'drf_spectacular'
 ]
 
 MIDDLEWARE = [
@@ -133,12 +134,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # Added settings
 
 REST_FRAMEWORK = {
-    'DEFAULT_PERMISSION_CLASSES': [
-        'rest_framework.permissions.AllowAny',
-    ],
-    'DEFAULT_AUTHENTICATION_CLASSES': [
-        'rest_framework.authentication.BasicAuthentication',
-    ],
+    'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema'
 }
 
 AUTH_USER_MODEL = 'core.User'
