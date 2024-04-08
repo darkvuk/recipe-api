@@ -41,7 +41,8 @@ INSTALLED_APPS = [
     # Added apps
     'rest_framework',
     'core',
-    'drf_spectacular'
+    'drf_spectacular',
+    'user'
 ]
 
 MIDDLEWARE = [
