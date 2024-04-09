@@ -40,6 +40,7 @@ INSTALLED_APPS = [
 
     # Added apps
     'rest_framework',
+    'rest_framework.authtoken',
     'core',
     'drf_spectacular',
     'user'
@@ -134,8 +135,9 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # Added settings
 
-REST_FRAMEWORK = {
-    'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema'
-}
-
 AUTH_USER_MODEL = 'core.User'
+
+REST_FRAMEWORK = {
+    'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
+    'SCHEMA_PATH_PREFIX': r'/api',
+}
