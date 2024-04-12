@@ -377,6 +377,51 @@ class PrivateRecipeApiTests(TestCase):
         self.assertEqual(res.status_code, status.HTTP_200_OK)
         self.assertEqual(recipe.ingredients.count(), 0)
 
+    def test_filter_by_tags(self):
+        """Test filtering recipes by tags."""
+        recipe_1 = create_recipe(user=self.user, title='Curry')
+        tag_1 = Tag.objects.create(user=self.user, name='Vegan')
+        recipe_1.tags.add(tag_1)
+
+        recipe_2 = create_recipe(user=self.user, title='Aubergine')
+        tag_2 = Tag.objects.create(user=self.user, name='Vegetarian')
+        recipe_2.tags.add(tag_2)
+
+        recipe_3 = create_recipe(user=self.user, title='Fish and chips')
+
+        params = {'tags': f'{tag_1.id},{tag_2.id}'}
+        res = self.client.get(RECIPES_URL, params)
+
+        s_1 = RecipeSerializer(recipe_1)
+        self.assertIn(s_1.data, res.data)
+        s_2 = RecipeSerializer(recipe_2)
+        self.assertIn(s_2.data, res.data)
+        s_3 = RecipeSerializer(recipe_3)
+        self.assertNotIn(s_3.data, res.data)
+        
+    def test_filter_by_ingredients(self):
+        """Test filtering recipes by ingredients."""
+        recipe_1 = create_recipe(user=self.user, title='Pizza')
+        ingredient_1 = Ingredient.objects.create(user=self.user, name='Cheese')
+        recipe_1.ingredients.add(ingredient_1)
+
+        recipe_2 = create_recipe(user=self.user, title='Burger')
+        ingredient_2 = Ingredient.objects.create(user=self.user, name='Beef')
+        recipe_2.ingredients.add(ingredient_2)
+
+        recipe_3 = create_recipe(user=self.user, title='Fish and chips')
+
+        params = {'ingredients': f'{ingredient_1.id},{ingredient_2.id}'}
+        res = self.client.get(RECIPES_URL, params)
+
+        s_1 = RecipeSerializer(recipe_1)
+        self.assertIn(s_1.data, res.data)
+        s_2 = RecipeSerializer(recipe_2)
+        self.assertIn(s_2.data, res.data)
+        s_3 = RecipeSerializer(recipe_3)
+        self.assertNotIn(s_3.data, res.data)
+
+
 class ImageUploadTests(TestCase):
     """Tests for the image upload API."""
 
